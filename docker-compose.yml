@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  game-engine:
+    build:
+      context: ./game-engine
+    container_name: game-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  leaderboard:
+    build:
+      context: ./leaderboard
+    container_name: leaderboard-service
+    ports:
+      - "8001:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+
+  game-ui:
+    build:
+      context: ./game-ui
+    container_name: game-ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - game-engine
+      - leaderboard
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
