@@ -1,0 +1,41 @@
+name: Build and Push Docker Image to Azure Container Registry
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ACR_NAME: rockpapperscissors.azurecr.io
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: ACR Login
+      run: |
+        az acr login --name ${{ env.ACR_NAME }}
+
+    - name: Build and push engine image
+      run: |
+        docker build -f game-engine/Dockerfile -t $ACR_NAME/engine:latest ./game-engine
+        docker push $ACR_NAME/engine:latest
+
+    - name: Build and push leaderboard image
+      run: |
+        docker build -f leaderboard/Dockerfile -t $ACR_NAME/leaderboard:latest ./leaderboard
+        docker push $ACR_NAME/leaderboard:latest
+
+    - name: Build and push frontend image
+      run: |
+        docker build -f game-ui/Dockerfile -t $ACR_NAME/game-ui:latest ./game-ui
+        docker push $ACR_NAME/ui:latest

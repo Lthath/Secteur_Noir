@@ -3,25 +3,24 @@ import axios from 'axios';
 
 const choices = ["rock", "paper", "scissors"];
 
-function Game({ onWin }) {
+function Game({ player, onWin }) {
   const [result, setResult] = useState(null);
 
   const play = async (choice) => {
     try {
-      const response = await axios.post("http://game-engine:8000/play", {
+      const response = await axios.post("http://localhost:8000/play", {
         player_choice: choice,
-        session_id: "hakim"
+        session_id: player || "anonymous"
       });
 
       setResult(response.data);
 
       if (response.data.result === "win") {
-        await axios.post("http://leaderboard:8001/score", {
-          player: "hakim",
+        await axios.post("http://localhost:8001/score", {
+          player: player || "anonymous",
           result: "win"
         });
 
-        // Déclenche le refresh du leaderboard
         onWin();
       }
     } catch (error) {

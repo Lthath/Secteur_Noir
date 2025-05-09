@@ -6,7 +6,7 @@ services:
       context: ./game-engine
     container_name: game-engine
     ports:
-      - "8000:8000"
+      - "8000:8000"  # Exposé pour que puisse atteindre /play
     environment:
       - PYTHONUNBUFFERED=1
 
@@ -15,7 +15,7 @@ services:
       context: ./leaderboard
     container_name: leaderboard-service
     ports:
-      - "8001:8000"
+      - "8001:8000"  # Exposé pour /score et /top
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -27,7 +27,7 @@ services:
       context: ./game-ui
     container_name: game-ui
     ports:
-      - "8080:80"
+      - "8080:80"  # Exposé pour servir React build (accessible à /
     depends_on:
       - game-engine
       - leaderboard
@@ -35,10 +35,9 @@ services:
   redis:
     image: redis:7
     container_name: redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis-data:/data
+    # Pas exposé publiquement — uniquement interne vise à ne plus etre utilisé car remplacer par le service redis d'azure
 
 volumes:
   redis-data:
