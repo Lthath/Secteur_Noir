@@ -7,7 +7,7 @@ function Leaderboard({ refresh }) {
   useEffect(() => {
     const fetchScores = async () => {
       try {
-        const response = await axios.get("http://localhost:8001/top");
+        const response = await axios.get("/top");
         setScores(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement du leaderboard :", error);
