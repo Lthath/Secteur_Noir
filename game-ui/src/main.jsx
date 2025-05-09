@@ -8,7 +8,7 @@ const msalConfig = {
   auth: {
     clientId: "e0f00df6-96ff-4ec6-ba12-2d5db367c482", // ton App ID
     authority: "https://login.microsoftonline.com/d5f60241-0fe3-4112-b218-a129fdb11b22",
-    redirectUri: "https://ac09-20-234-154-181.ngrok-free.app"
+    redirectUri: "https://ac51-20-234-154-181.ngrok-free.app"
   },
   cache: {
     cacheLocation: 'localStorage',
