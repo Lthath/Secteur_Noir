@@ -37,5 +37,5 @@ jobs:
 
     - name: Build and push frontend image
       run: |
-        docker build -f game-ui/Dockerfile -t $ACR_NAME/game-ui:latest ./game-ui
+        docker build -f game-ui/Dockerfile -t $ACR_NAME/ui:latest ./game-ui
         docker push $ACR_NAME/ui:latest
